@@ -404,6 +404,44 @@ scene.add(yacht);
 // Aliases for legacy refs further in file
 const darkMat = hullDarkMat;
 
+/* ---------- FLOATING PHOTO FRAME (3D + real photo) ---------- */
+const photoGroup = new THREE.Group();
+photoGroup.visible = false; // shown only if texture loads
+
+const frameGeo = new THREE.PlaneGeometry(7, 4.4);
+const frameMat = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  side: THREE.DoubleSide,
+});
+const photoPlane = new THREE.Mesh(frameGeo, frameMat);
+
+const goldFrameGeo = new THREE.PlaneGeometry(7.3, 4.7);
+const goldFrame = new THREE.Mesh(
+  goldFrameGeo,
+  new THREE.MeshBasicMaterial({ color: 0xc9a96a })
+);
+goldFrame.position.z = -0.02;
+
+photoGroup.add(goldFrame, photoPlane);
+photoGroup.position.set(28, 6.5, -8);
+photoGroup.rotation.y = -0.45;
+scene.add(photoGroup);
+
+const texLoader = new THREE.TextureLoader();
+texLoader.load(
+  'photos/hero.jpg',
+  (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    photoPlane.material = new THREE.MeshBasicMaterial({
+      map: tex,
+      side: THREE.DoubleSide,
+    });
+    photoGroup.visible = true;
+  },
+  undefined,
+  () => { /* image absent — frame stays hidden */ }
+);
+
 /* ---------- SECONDARY YACHTS (distant) ---------- */
 function makeDistantYacht(x, z, scale, rot) {
   const g = new THREE.Group();
@@ -636,6 +674,13 @@ function animate() {
   wake.position.set(stern.x, 0.05, stern.z);
   wakeMat.uniforms.uTime.value = t;
   wakeMat.uniforms.uOpacity.value = 0.55 - skyT * 0.35;
+
+  // Floating photo frame — slow drift and gentle rotation
+  if (photoGroup.visible) {
+    photoGroup.position.y = 6.5 + Math.sin(t * 0.5) * 0.4;
+    photoGroup.rotation.y = -0.45 + Math.sin(t * 0.3) * 0.08;
+    photoGroup.rotation.z = Math.sin(t * 0.4) * 0.025;
+  }
 
   // Birds disappear at night
   birds.forEach((b) => {
