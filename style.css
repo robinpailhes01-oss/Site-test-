@@ -28,19 +28,20 @@ body {
   display: block;
 }
 
-#hero-photo {
+.scroll-photo {
   position: fixed;
   inset: 0;
   z-index: 1;
-  background-image: url('photos/hero.jpg');
   background-size: cover;
   background-position: center 40%;
+  background-repeat: no-repeat;
   pointer-events: none;
-  display: none; /* JS turns this on if the image actually loads */
-  will-change: opacity, transform;
+  display: none; /* JS turns this on once the image loads */
+  opacity: 0;
+  will-change: opacity, transform, filter;
 }
 
-#hero-photo::after {
+.scroll-photo::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -53,6 +54,21 @@ body {
       rgba(4, 17, 31, 0.55) 0%,
       rgba(4, 17, 31, 0.1) 60%,
       rgba(4, 17, 31, 0.0) 100%);
+}
+
+/* Night-version filter: blueshift, darker, slight blur for mood */
+.scroll-photo--night {
+  filter: brightness(0.42) contrast(1.05) saturate(0.7)
+          hue-rotate(195deg) blur(0.3px);
+}
+.scroll-photo--night::after {
+  background:
+    radial-gradient(ellipse at 50% 30%,
+      rgba(201, 169, 106, 0.10), transparent 60%),
+    linear-gradient(180deg,
+      rgba(2, 8, 18, 0.45) 0%,
+      rgba(2, 8, 18, 0.55) 45%,
+      rgba(2, 8, 18, 0.92) 100%);
 }
 
 #scroll-progress {

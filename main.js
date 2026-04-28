@@ -602,31 +602,53 @@ function yachtRotY(t) {
 let scrollProgress = 0;
 let targetScroll = 0;
 
-/* Hero photo fade-out on scroll */
-const heroPhotoEl = document.getElementById('hero-photo');
-let heroPhotoActive = false;
-const heroProbe = new Image();
-heroProbe.onload = () => {
-  heroPhotoEl.style.display = 'block';
-  heroPhotoActive = true;
-  // Hide the floating 3D photo frame to avoid duplication
-  photoGroup.visible = false;
-};
-heroProbe.src = 'photos/hero.jpg';
+/* Scroll-driven photo slots — each fades in/out over its own scroll range */
+const scrollPhotos = [...document.querySelectorAll('.scroll-photo')].map((el) => ({
+  el,
+  start: parseFloat(el.dataset.start),
+  peakIn: parseFloat(el.dataset.peakIn),
+  peakOut: parseFloat(el.dataset.peakOut),
+  end: parseFloat(el.dataset.end),
+  loaded: false,
+}));
+
+scrollPhotos.forEach((p) => {
+  const probe = new Image();
+  probe.onload = () => {
+    p.el.style.backgroundImage = `url('${p.el.dataset.src}')`;
+    p.el.style.display = 'block';
+    p.loaded = true;
+    // Hide the floating 3D photo frame if any photo is in use
+    photoGroup.visible = false;
+  };
+  probe.src = p.el.dataset.src;
+});
+
+function photoOpacity(t, p) {
+  if (t < p.start || t > p.end) return 0;
+  if (t < p.peakIn) return (t - p.start) / Math.max(0.0001, p.peakIn - p.start);
+  if (t > p.peakOut) return (p.end - t) / Math.max(0.0001, p.end - p.peakOut);
+  return 1;
+}
 
 function updateScroll() {
   const max = document.body.scrollHeight - window.innerHeight;
   targetScroll = Math.max(0, Math.min(1, window.scrollY / max));
-  // Update CSS scroll progress bar
   const bar = document.getElementById('scroll-progress');
   if (bar) bar.style.transform = `scaleX(${targetScroll})`;
-  // Fade hero photo over the first ~12% of scroll, with subtle parallax zoom
-  if (heroPhotoActive) {
-    const fadeT = Math.min(1, window.scrollY / (window.innerHeight * 0.7));
-    heroPhotoEl.style.opacity = (1 - fadeT).toFixed(3);
-    heroPhotoEl.style.transform =
-      `scale(${(1 + fadeT * 0.12).toFixed(3)}) translateY(${(-fadeT * 30).toFixed(1)}px)`;
-  }
+
+  // Each photo: opacity from its trapezoidal curve, plus a parallax zoom
+  scrollPhotos.forEach((p) => {
+    if (!p.loaded) return;
+    const o = photoOpacity(targetScroll, p);
+    p.el.style.opacity = o.toFixed(3);
+    // Parallax: slight zoom + drift while photo is in its range
+    const localT = Math.max(0, Math.min(1,
+      (targetScroll - p.start) / Math.max(0.0001, p.end - p.start)));
+    const scale = 1 + localT * 0.10;
+    const ty = -localT * 30;
+    p.el.style.transform = `scale(${scale.toFixed(3)}) translateY(${ty.toFixed(1)}px)`;
+  });
 }
 window.addEventListener('scroll', updateScroll, { passive: true });
 
