@@ -602,12 +602,31 @@ function yachtRotY(t) {
 let scrollProgress = 0;
 let targetScroll = 0;
 
+/* Hero photo fade-out on scroll */
+const heroPhotoEl = document.getElementById('hero-photo');
+let heroPhotoActive = false;
+const heroProbe = new Image();
+heroProbe.onload = () => {
+  heroPhotoEl.style.display = 'block';
+  heroPhotoActive = true;
+  // Hide the floating 3D photo frame to avoid duplication
+  photoGroup.visible = false;
+};
+heroProbe.src = 'photos/hero.jpg';
+
 function updateScroll() {
   const max = document.body.scrollHeight - window.innerHeight;
   targetScroll = Math.max(0, Math.min(1, window.scrollY / max));
   // Update CSS scroll progress bar
   const bar = document.getElementById('scroll-progress');
   if (bar) bar.style.transform = `scaleX(${targetScroll})`;
+  // Fade hero photo over the first ~12% of scroll, with subtle parallax zoom
+  if (heroPhotoActive) {
+    const fadeT = Math.min(1, window.scrollY / (window.innerHeight * 0.7));
+    heroPhotoEl.style.opacity = (1 - fadeT).toFixed(3);
+    heroPhotoEl.style.transform =
+      `scale(${(1 + fadeT * 0.12).toFixed(3)}) translateY(${(-fadeT * 30).toFixed(1)}px)`;
+  }
 }
 window.addEventListener('scroll', updateScroll, { passive: true });
 
