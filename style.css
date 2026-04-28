@@ -28,6 +28,34 @@ body {
   display: block;
 }
 
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), #f4d28a);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 200;
+  transition: transform 0.1s linear;
+  box-shadow: 0 0 12px rgba(201, 169, 106, 0.4);
+}
+
+/* Section reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal--delay-1 { transition-delay: 0.12s; }
+.reveal--delay-2 { transition-delay: 0.24s; }
+.reveal--delay-3 { transition-delay: 0.36s; }
+
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
