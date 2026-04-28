@@ -12,8 +12,13 @@
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
-  <div class="scroll-photo" data-src="photos/hero.jpg"
-       data-start="0" data-peak-in="0" data-peak-out="0.07" data-end="0.14"></div>
+  <div class="scroll-photo scroll-photo--video" data-src="photos/hero.jpg"
+       data-start="0" data-peak-in="0" data-peak-out="0.07" data-end="0.14">
+    <video autoplay muted loop playsinline preload="metadata"
+           poster="photos/hero.jpg">
+      <source src="photos/hero.mp4" type="video/mp4" />
+    </video>
+  </div>
   <div class="scroll-photo" data-src="photos/yacht-arriere.jpg"
        data-start="0.42" data-peak-in="0.48" data-peak-out="0.54" data-end="0.60"></div>
   <div class="scroll-photo scroll-photo--night" data-src="photos/hero.jpg"

@@ -613,15 +613,34 @@ const scrollPhotos = [...document.querySelectorAll('.scroll-photo')].map((el) =>
 }));
 
 scrollPhotos.forEach((p) => {
-  const probe = new Image();
-  probe.onload = () => {
-    p.el.style.backgroundImage = `url('${p.el.dataset.src}')`;
-    p.el.style.display = 'block';
-    p.loaded = true;
-    // Hide the floating 3D photo frame if any photo is in use
-    photoGroup.visible = false;
-  };
-  probe.src = p.el.dataset.src;
+  const video = p.el.querySelector('video');
+  if (video) {
+    // Show as soon as the poster image loads OR the video has data
+    const reveal = () => {
+      if (p.loaded) return;
+      p.el.style.display = 'block';
+      p.loaded = true;
+      photoGroup.visible = false;
+    };
+    video.addEventListener('loadeddata', reveal);
+    // Fallback: poster image loads
+    const posterProbe = new Image();
+    posterProbe.onload = reveal;
+    posterProbe.src = video.poster;
+    // Try to play (some browsers require explicit play call)
+    const tryPlay = () => video.play().catch(() => {});
+    tryPlay();
+    document.addEventListener('click', tryPlay, { once: true });
+  } else {
+    const probe = new Image();
+    probe.onload = () => {
+      p.el.style.backgroundImage = `url('${p.el.dataset.src}')`;
+      p.el.style.display = 'block';
+      p.loaded = true;
+      photoGroup.visible = false;
+    };
+    probe.src = p.el.dataset.src;
+  }
 });
 
 function photoOpacity(t, p) {

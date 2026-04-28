@@ -41,6 +41,18 @@ body {
   will-change: opacity, transform, filter;
 }
 
+.scroll-photo--video {
+  background: #04111f;
+}
+.scroll-photo--video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .scroll-photo::after {
   content: '';
   position: absolute;
