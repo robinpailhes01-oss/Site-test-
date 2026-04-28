@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Azure Yachts — Location de Yacht de Luxe</title>
+  <meta name="description" content="Location de yacht de luxe sur la Côte d'Azur. Une expérience nautique inoubliable." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header class="nav">
+    <div class="nav__brand">
+      <span class="nav__logo">⚓</span>
+      <span class="nav__name">AZURE&nbsp;YACHTS</span>
+    </div>
+    <nav class="nav__links">
+      <a href="#hero">Accueil</a>
+      <a href="#fleet">Flotte</a>
+      <a href="#experience">Expérience</a>
+      <a href="#destinations">Destinations</a>
+      <a href="#contact">Réserver</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero" class="section section--hero">
+      <div class="hero__inner">
+        <p class="eyebrow">Côte d'Azur · Méditerranée · Caraïbes</p>
+        <h1 class="hero__title">Naviguez<br/><em>au-delà du luxe</em></h1>
+        <p class="hero__subtitle">Une flotte privée de yachts d'exception pour des escapades sur mesure.</p>
+        <div class="hero__cta">
+          <a href="#fleet" class="btn btn--primary">Découvrir la flotte</a>
+          <a href="#contact" class="btn btn--ghost">Réserver une croisière</a>
+        </div>
+      </div>
+      <div class="scroll-cue">
+        <span>Faites défiler</span>
+        <div class="scroll-cue__line"></div>
+      </div>
+    </section>
+
+    <section id="fleet" class="section section--fleet">
+      <div class="content">
+        <p class="eyebrow">La flotte</p>
+        <h2 class="section__title">Des yachts pensés pour l'évasion</h2>
+        <div class="fleet-grid">
+          <article class="card">
+            <h3>L'Aurora · 32m</h3>
+            <p>Yacht à moteur élégant, 5 cabines, équipage de 6. Idéal pour la Riviera française.</p>
+            <span class="card__price">à partir de 78 000 € / semaine</span>
+          </article>
+          <article class="card">
+            <h3>Le Mistral · 45m</h3>
+            <p>Superyacht avec piscine sur le pont supérieur, jacuzzi, jet-skis et toys nautiques.</p>
+            <span class="card__price">à partir de 165 000 € / semaine</span>
+          </article>
+          <article class="card">
+            <h3>L'Odyssée · 28m</h3>
+            <p>Voilier de prestige, atmosphère intimiste, parfait pour la Corse et la Sardaigne.</p>
+            <span class="card__price">à partir de 52 000 € / semaine</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="section section--experience">
+      <div class="content content--right">
+        <p class="eyebrow">L'expérience</p>
+        <h2 class="section__title">Un service taillé sur mesure</h2>
+        <ul class="bullets">
+          <li><strong>Équipage privé</strong> — capitaine, hôtesse, chef étoilé.</li>
+          <li><strong>Itinéraire personnalisé</strong> — Saint-Tropez, Portofino, Capri, Ibiza.</li>
+          <li><strong>Conciergerie 24/7</strong> — réservations, transferts, hélicoptère.</li>
+          <li><strong>Activités nautiques</strong> — plongée, paddle, jet-ski, seabob.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="destinations" class="section section--destinations">
+      <div class="content">
+        <p class="eyebrow">Destinations</p>
+        <h2 class="section__title">Des horizons sans limites</h2>
+        <div class="destinations">
+          <div class="dest"><span>01</span><h4>Côte d'Azur</h4><p>Cannes, Saint-Tropez, Monaco</p></div>
+          <div class="dest"><span>02</span><h4>Riviera italienne</h4><p>Portofino, Capri, Amalfi</p></div>
+          <div class="dest"><span>03</span><h4>Baléares</h4><p>Ibiza, Formentera, Majorque</p></div>
+          <div class="dest"><span>04</span><h4>Caraïbes</h4><p>Saint-Barth, Antigua, BVI</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section section--contact">
+      <div class="content content--center">
+        <p class="eyebrow">Réservation</p>
+        <h2 class="section__title">Prenez le large</h2>
+        <p class="contact__lead">Notre équipe vous répond sous 24 h pour bâtir votre croisière idéale.</p>
+        <form class="form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Demande envoyée ✓';">
+          <div class="form__row">
+            <input type="text" placeholder="Nom" required />
+            <input type="email" placeholder="Email" required />
+          </div>
+          <div class="form__row">
+            <input type="text" placeholder="Dates souhaitées" />
+            <input type="text" placeholder="Destination" />
+          </div>
+          <textarea placeholder="Votre projet de croisière" rows="4"></textarea>
+          <button type="submit" class="btn btn--primary">Envoyer ma demande</button>
+        </form>
+        <footer class="footer">
+          <span>© 2026 Azure Yachts — Port Hercule, Monaco</span>
+          <span>contact@azure-yachts.com · +377 99 00 00 00</span>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
